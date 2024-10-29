@@ -16,6 +16,17 @@ func (rt RoleType) String() string {
 	return string(rt)
 }
 
+func ParseRoleType(s string) RoleType {
+	switch s {
+	case "owner":
+		return RoleTypeOwner
+	case "member":
+		return RoleTypeMember
+	default:
+		return ""
+	}
+}
+
 type CustomTime time.Time
 
 func (ct *CustomTime) UnmarshalJSON(b []byte) error {
