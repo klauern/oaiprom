@@ -21,18 +21,18 @@ func (c *Client) ListProjectServiceAccounts(projectID string, limit int, after s
 		queryParams["after"] = after
 	}
 
-	return Get[ProjectServiceAccount](c.client, fmt.Sprintf(ProjectServiceAccountsListEndpoint, projectID), queryParams)
+	return Get[ProjectServiceAccount](c.httpClient, fmt.Sprintf(ProjectServiceAccountsListEndpoint, projectID), queryParams)
 }
 
 func (c *Client) CreateProjectServiceAccount(projectID string, name string) (*ProjectServiceAccount, error) {
 	body := map[string]string{"name": name}
-	return Post[ProjectServiceAccount](c.client, fmt.Sprintf(ProjectServiceAccountsListEndpoint, projectID), body)
+	return Post[ProjectServiceAccount](c.httpClient, fmt.Sprintf(ProjectServiceAccountsListEndpoint, projectID), body)
 }
 
 func (c *Client) RetrieveProjectServiceAccount(projectID string, serviceAccountID string) (*ProjectServiceAccount, error) {
-	return GetSingle[ProjectServiceAccount](c.client, fmt.Sprintf(ProjectServiceAccountsListEndpoint+"/%s", projectID, serviceAccountID))
+	return GetSingle[ProjectServiceAccount](c.httpClient, fmt.Sprintf(ProjectServiceAccountsListEndpoint+"/%s", projectID, serviceAccountID))
 }
 
 func (c *Client) DeleteProjectServiceAccount(projectID string, serviceAccountID string) error {
-	return Delete[ProjectServiceAccount](c.client, fmt.Sprintf(ProjectServiceAccountsListEndpoint+"/%s", projectID, serviceAccountID))
+	return Delete[ProjectServiceAccount](c.httpClient, fmt.Sprintf(ProjectServiceAccountsListEndpoint+"/%s", projectID, serviceAccountID))
 }

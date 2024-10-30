@@ -38,13 +38,13 @@ func (c *Client) ListProjectApiKeys(projectID string, limit int, after string) (
 		queryParams["after"] = after
 	}
 
-	return Get[ProjectApiKey](c.client, fmt.Sprintf(ProjectApiKeysListEndpoint, projectID), queryParams)
+	return Get[ProjectApiKey](c.httpClient, fmt.Sprintf(ProjectApiKeysListEndpoint, projectID), queryParams)
 }
 
 func (c *Client) RetrieveProjectApiKey(projectID string, apiKeyID string) (*ProjectApiKey, error) {
-	return GetSingle[ProjectApiKey](c.client, fmt.Sprintf(ProjectApiKeysListEndpoint+"/%s", projectID, apiKeyID))
+	return GetSingle[ProjectApiKey](c.httpClient, fmt.Sprintf(ProjectApiKeysListEndpoint+"/%s", projectID, apiKeyID))
 }
 
 func (c *Client) DeleteProjectApiKey(projectID string, apiKeyID string) error {
-	return Delete[ProjectApiKey](c.client, fmt.Sprintf(ProjectApiKeysListEndpoint+"/%s", projectID, apiKeyID))
+	return Delete[ProjectApiKey](c.httpClient, fmt.Sprintf(ProjectApiKeysListEndpoint+"/%s", projectID, apiKeyID))
 }

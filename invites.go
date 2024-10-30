@@ -22,7 +22,7 @@ const InviteListEndpoint = "/organization/invites"
 
 func (c *Client) ListInvites() ([]Invite, error) {
 	// Get the raw response
-	rawResp, err := c.client.R().Get(InviteListEndpoint)
+	rawResp, err := c.httpClient.R().Get(InviteListEndpoint)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get invites: %w", err)
 	}
@@ -49,7 +49,7 @@ func (c *Client) CreateInvite(email string, role RoleType) (*Invite, error) {
 		"role":  string(role),
 	}
 
-	invite, err := Post[Invite](c.client, InviteListEndpoint, body)
+	invite, err := Post[Invite](c.httpClient, InviteListEndpoint, body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create invite: %w", err)
 	}
@@ -58,7 +58,7 @@ func (c *Client) CreateInvite(email string, role RoleType) (*Invite, error) {
 }
 
 func (c *Client) RetrieveInvite(id string) (*Invite, error) {
-	resp, err := GetSingle[Invite](c.client, InviteListEndpoint+"/"+id)
+	resp, err := GetSingle[Invite](c.httpClient, InviteListEndpoint+"/"+id)
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve invite: %w", err)
 	}
@@ -67,7 +67,7 @@ func (c *Client) RetrieveInvite(id string) (*Invite, error) {
 }
 
 func (c *Client) DeleteInvite(id string) error {
-	err := Delete[Invite](c.client, InviteListEndpoint+"/"+id)
+	err := Delete[Invite](c.httpClient, InviteListEndpoint+"/"+id)
 	if err != nil {
 		return fmt.Errorf("failed to delete invite: %w", err)
 	}

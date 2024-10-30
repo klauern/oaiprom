@@ -9,9 +9,13 @@ import (
 
 const DefaultBaseURL = "https://api.openai.com/v1"
 
+type HTTPRequester interface {
+	R() *resty.Request
+}
+
 type Client struct {
-	client  *resty.Client
-	BaseURL string
+	httpClient HTTPRequester
+	BaseURL    string
 }
 
 type ListResponse[T any] struct {
@@ -32,12 +36,12 @@ func NewClient(baseURL, token string) *Client {
 	client.SetHeader("Content-Type", "application/json")
 
 	return &Client{
-		client:  client,
-		BaseURL: baseURL,
+		httpClient: client,
+		BaseURL:    baseURL,
 	}
 }
 
-func GetSingle[T any](client *resty.Client, endpoint string) (*T, error) {
+func GetSingle[T any](client HTTPRequester, endpoint string) (*T, error) {
 	resp, err := client.R().
 		ExpectContentType("application/json").
 		Get(endpoint)
@@ -58,7 +62,7 @@ func GetSingle[T any](client *resty.Client, endpoint string) (*T, error) {
 	return &result, nil
 }
 
-func Get[T any](client *resty.Client, endpoint string, queryParams map[string]string) (*ListResponse[T], error) {
+func Get[T any](client HTTPRequester, endpoint string, queryParams map[string]string) (*ListResponse[T], error) {
 	resp, err := client.R().
 		SetQueryParams(queryParams).
 		ExpectContentType("application/json").
@@ -80,7 +84,7 @@ func Get[T any](client *resty.Client, endpoint string, queryParams map[string]st
 	return &listResp, nil
 }
 
-func Post[T any](client *resty.Client, endpoint string, body interface{}) (*T, error) {
+func Post[T any](client HTTPRequester, endpoint string, body interface{}) (*T, error) {
 	resp, err := client.R().
 		SetBody(body).
 		ExpectContentType("application/json").
@@ -102,8 +106,9 @@ func Post[T any](client *resty.Client, endpoint string, body interface{}) (*T, e
 	return &result, nil
 }
 
-func Delete[T any](client *resty.Client, endpoint string) error {
-	_, err := client.R().Delete(endpoint)
+func Delete[T any](client HTTPRequester, endpoint string) error {
+	_, err := client.R().
+		Delete(endpoint)
 	if err != nil {
 		return fmt.Errorf("error making DELETE request: %v", err)
 	}

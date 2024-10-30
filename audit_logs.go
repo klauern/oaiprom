@@ -214,7 +214,7 @@ func (c *Client) ListAuditLogs(params *AuditLogListParams) (*ListResponse[AuditL
 		}
 	}
 
-	return Get[AuditLog](c.client, AuditLogsListEndpoint, queryParams)
+	return Get[AuditLog](c.httpClient, AuditLogsListEndpoint, queryParams)
 }
 
 // ParseAuditLogPayload parses the payload of an AuditLog based on its type

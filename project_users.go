@@ -22,23 +22,23 @@ func (c *Client) ListProjectUsers(projectID string, limit int, after string) (*L
 		queryParams["after"] = after
 	}
 
-	return Get[ProjectUser](c.client, fmt.Sprintf(ProjectUsersListEndpoint, projectID), queryParams)
+	return Get[ProjectUser](c.httpClient, fmt.Sprintf(ProjectUsersListEndpoint, projectID), queryParams)
 }
 
 func (c *Client) CreateProjectUser(projectID string, userID string, role RoleType) (*ProjectUser, error) {
 	body := map[string]string{"user_id": userID, "role": string(role)}
-	return Post[ProjectUser](c.client, fmt.Sprintf(ProjectUsersListEndpoint, projectID), body)
+	return Post[ProjectUser](c.httpClient, fmt.Sprintf(ProjectUsersListEndpoint, projectID), body)
 }
 
 func (c *Client) RetrieveProjectUser(projectID string, userID string) (*ProjectUser, error) {
-	return GetSingle[ProjectUser](c.client, fmt.Sprintf(ProjectUsersListEndpoint+"/%s", projectID, userID))
+	return GetSingle[ProjectUser](c.httpClient, fmt.Sprintf(ProjectUsersListEndpoint+"/%s", projectID, userID))
 }
 
 func (c *Client) ModifyProjectUser(projectID string, userID string, role RoleType) (*ProjectUser, error) {
 	body := map[string]string{"role": string(role)}
-	return Post[ProjectUser](c.client, fmt.Sprintf(ProjectUsersListEndpoint+"/%s", projectID, userID), body)
+	return Post[ProjectUser](c.httpClient, fmt.Sprintf(ProjectUsersListEndpoint+"/%s", projectID, userID), body)
 }
 
 func (c *Client) DeleteProjectUser(projectID string, userID string) error {
-	return Delete[ProjectUser](c.client, fmt.Sprintf(ProjectUsersListEndpoint+"/%s", projectID, userID))
+	return Delete[ProjectUser](c.httpClient, fmt.Sprintf(ProjectUsersListEndpoint+"/%s", projectID, userID))
 }

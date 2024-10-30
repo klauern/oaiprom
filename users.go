@@ -25,15 +25,15 @@ func (c *Client) ListUsers(limit int, after string) (*ListResponse[Users], error
 		queryParams["after"] = after
 	}
 
-	return Get[Users](c.client, UsersListEndpoint, queryParams)
+	return Get[Users](c.httpClient, UsersListEndpoint, queryParams)
 }
 
 func (c *Client) RetrieveUser(id string) (*Users, error) {
-	return GetSingle[Users](c.client, UsersListEndpoint+"/"+id)
+	return GetSingle[Users](c.httpClient, UsersListEndpoint+"/"+id)
 }
 
 func (c *Client) DeleteUser(id string) error {
-	err := Delete[Users](c.client, UsersListEndpoint+"/"+id)
+	err := Delete[Users](c.httpClient, UsersListEndpoint+"/"+id)
 	if err != nil {
 		return fmt.Errorf("failed to delete user: %w", err)
 	}
@@ -46,7 +46,7 @@ func (c *Client) ModifyUserRole(id string, role RoleType) error {
 		"role": string(role),
 	}
 
-	_, err := Post[Users](c.client, UsersListEndpoint+"/"+id, body)
+	_, err := Post[Users](c.httpClient, UsersListEndpoint+"/"+id, body)
 	if err != nil {
 		return fmt.Errorf("failed to modify user role: %w", err)
 	}

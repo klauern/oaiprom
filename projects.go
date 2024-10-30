@@ -25,23 +25,23 @@ func (c *Client) ListProjects(limit int, after string, includeArchived bool) (*L
 		queryParams["include_archived"] = "true"
 	}
 
-	return Get[Project](c.client, ProjectsListEndpoint, queryParams)
+	return Get[Project](c.httpClient, ProjectsListEndpoint, queryParams)
 }
 
 func (c *Client) CreateProject(name string) (*Project, error) {
 	body := map[string]string{"name": name}
-	return Post[Project](c.client, ProjectsListEndpoint, body)
+	return Post[Project](c.httpClient, ProjectsListEndpoint, body)
 }
 
 func (c *Client) RetrieveProject(id string) (*Project, error) {
-	return GetSingle[Project](c.client, ProjectsListEndpoint+"/"+id)
+	return GetSingle[Project](c.httpClient, ProjectsListEndpoint+"/"+id)
 }
 
 func (c *Client) ModifyProject(id string, name string) (*Project, error) {
 	body := map[string]string{"name": name}
-	return Post[Project](c.client, ProjectsListEndpoint+"/"+id, body)
+	return Post[Project](c.httpClient, ProjectsListEndpoint+"/"+id, body)
 }
 
 func (c *Client) ArchiveProject(id string) (*Project, error) {
-	return Post[Project](c.client, ProjectsListEndpoint+"/"+id+"/archive", nil)
+	return Post[Project](c.httpClient, ProjectsListEndpoint+"/"+id+"/archive", nil)
 }
